@@ -20,7 +20,7 @@ jobs:
         name: run maven
         run: |
             mvn clean
-            mkdir -p target/dependency && (cd target/dependency;)
+            mkdir -p target/dependency && (cd target/dependency; unzip ../*.jar)
 
       -
         name: Set up QEMU
