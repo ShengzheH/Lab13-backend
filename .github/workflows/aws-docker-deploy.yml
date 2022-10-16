@@ -19,7 +19,7 @@ jobs:
       -
         name: run maven
         run: |
-            mvn clean
+            mvn clean install -DskipTests -B
             mkdir -p target/dependency && (cd target/dependency; unzip ../*.jar)
 
       -
