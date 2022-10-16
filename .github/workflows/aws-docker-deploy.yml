@@ -47,6 +47,7 @@ jobs:
               mkdir 331-backend
               cp docker-compose-prod.yml 331-backend/docker-compose.yml
               cd 331-backend
+              export DOCKER_HOST=tcp://127.0.0.1:2379
               docker-compose -H ${{ secrets.HOST_SERVER }} down
               docker-compose -H ${{ secrets.HOST_SERVER }} pull
               docker-compose -H ${{ secrets.HOST_SERVER }} up -d
