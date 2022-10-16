@@ -20,7 +20,9 @@ steps:
     name: run maven
     run: |
         mvn clean install-DskipTests -B
-        mkdir -p target/dependency && (cd target/dependency; unzip../*.jar)
+        mkdir -p target/dependency && (cd target/dependency; unzip
+../*.jar)
+
   -
     name: Set up QEMU
     uses: docker/setup-qemu-action@v1
