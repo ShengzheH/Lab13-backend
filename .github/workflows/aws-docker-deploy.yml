@@ -22,8 +22,7 @@ jobs:
             mvn clean
             apt update
             apt install -y unzip
-            mkdir -p target/dependency && (cd target/dependency; unzip 
-../*.jar)
+            mkdir -p target/dependency && (cd target/dependency;)
 
       -
         name: Set up QEMU
