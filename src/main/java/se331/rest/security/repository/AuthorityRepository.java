@@ -8,4 +8,5 @@ import se331.rest.security.entity.AuthorityName;
 
 public interface AuthorityRepository extends CrudRepository<Authority, Long> {
     Authority findByName(AuthorityName input);
+
 }
