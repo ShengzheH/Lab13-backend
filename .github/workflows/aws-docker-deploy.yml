@@ -20,8 +20,6 @@ jobs:
         name: run maven
         run: |
             mvn clean
-            apt update
-            apt install -y unzip
             mkdir -p target/dependency && (cd target/dependency;)
 
       -
