@@ -39,7 +39,7 @@ steps:
     with:
       context: .
       push: true
-      tags: 13819773795/331-securitylab: latest
+      tags: 13819773795/331-securitylab:latest
   -    
     name: prepare the docker-compose run
     run: |
