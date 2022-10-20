@@ -22,3 +22,5 @@ services:
       - JAVA_PROFILE=db
     depends_on:
       - db
+    links:
+      - db
