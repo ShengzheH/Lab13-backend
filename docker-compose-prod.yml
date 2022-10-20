@@ -20,7 +20,7 @@ services:
       - 8999:8080
     environment:
       - JAVA_PROFILE=db
-    restart: on_failure
+    restart: on-failure
     depends_on:
       - db
     links:
