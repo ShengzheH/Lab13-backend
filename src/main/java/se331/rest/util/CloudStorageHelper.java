@@ -64,7 +64,7 @@ public class CloudStorageHelper {
         // return the public download link
         return blobInfo.getMediaLink();
     }
-    public String getImageUrl(MultipartFile file,                             final String bucket) throws IOException, ServletException {
+    public String getImageUrl(MultipartFile file,final String bucket) throws IOException, ServletException {
         final String fileName = file.getOriginalFilename();
         // Check extension of file
         if (fileName != null && !fileName.isEmpty() && fileName.contains(".")) {

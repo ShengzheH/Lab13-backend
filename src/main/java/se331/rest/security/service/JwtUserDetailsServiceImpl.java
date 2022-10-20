@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import se331.rest.entity.Organizer;
+import se331.rest.repository.OrganizerRepository;
 import se331.rest.security.entity.Authority;
 import se331.rest.security.entity.AuthorityName;
 import se331.rest.security.entity.User;
@@ -14,6 +16,10 @@ import se331.rest.security.repository.AuthorityRepository;
 import se331.rest.security.repository.UserRepository;
 import se331.rest.security.util.JwtUserFactory;
 
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import static se331.rest.security.entity.AuthorityName.ROLE_USER;
@@ -29,6 +35,8 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
     @Autowired
     AuthorityRepository authorityRepository;
+    @Autowired
+    OrganizerRepository organizerRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -40,19 +48,41 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
             return JwtUserFactory.create(user);
         }
     }
+    @Transactional
     public User save(User user){
+        Organizer organizer;
+        organizer = organizerRepository.save(Organizer.builder()
+                .name("NEW").build());
         PasswordEncoder encoder = new BCryptPasswordEncoder( );
-        User temp = new User();
-        temp.setUsername(user.getUsername());
-        temp.setEmail(user.getEmail());
-        temp.setPassword( encoder.encode(user.getPassword()));
-        temp.setEnabled(true);
+        User user1 = User.builder()
+                .username ( user.getUsername())
+                .password ( encoder.encode ( user.getPassword() ) )
+                .firstname ( "NEW" )
+                .lastname ( "NEW")
+                .email ( user.getEmail() ).enabled (true)
+                .lastPasswordResetDate(Date.from(LocalDate.of (2021,01,
+                        01).atStartOfDay(ZoneId.systemDefault ()).toInstant()))
+                .build();
+
+
         Authority authority = authorityRepository.findByName(ROLE_USER);
         List<User> userList = authorityRepository.findByName(ROLE_USER).getUsers();
-        userList.add(temp);
+
+        userList.add(user1);
         authorityRepository.findByName(ROLE_USER).setUsers(userList);
         authority.setUsers(null);
-        temp.getAuthorities().add(authority);
-        return userRepository.save(temp);
+
+        user1.getAuthorities().add(authority);
+
+        System.out.println(1);
+        userRepository.save(user1);
+        organizer.setUser(user1);
+        Organizer organizer1 = new Organizer();
+        organizer1.setUser(null);
+        organizer1.setId(organizer.getId());
+        organizer1.setName(organizer.getName());
+        user1.setOrganizer(organizer1);
+        return user1;
+//        return temp;
     }
 }
